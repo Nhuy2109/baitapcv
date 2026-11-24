@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chọn phông tên</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Alex+Brush&family=Allura&family=Dancing+Script:wght@600&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 32px;
+            background: #e6e2dd;
+            color: #17130f;
+            font-family: system-ui, sans-serif
+        }
+
+        .row {
+            background: #f4f1ed;
+            border-radius: 16px;
+            padding: 20px 28px;
+            margin-bottom: 18px
+        }
+
+        .row small {
+            color: #6b625a
+        }
+
+        .n {
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            line-height: 1.3;
+            margin: 6px 0 0
+        }
+    </style>
+</head>
+
+<body>
+    <p>Mở file này bằng Live Server để xem. Chọn phông ưng ý rồi đổi tên phông trong <code>css/style.css</code> (dòng
+        <code>--font-name</code>) và trong <code>index.html</code> (dòng link Google Fonts).</p>
+    <div class="row"><small>Great Vibes (đang dùng)</small>
+        <div class="n" style="font-family:'Great Vibes',cursive">Đào Lâm Nhật Huy</div>
+    </div>
+    <div class="row"><small>Alex Brush</small>
+        <div class="n" style="font-family:'Alex Brush',cursive">Đào Lâm Nhật Huy</div>
+    </div>
+    <div class="row"><small>Allura</small>
+        <div class="n" style="font-family:'Allura',cursive">Đào Lâm Nhật Huy</div>
+    </div>
+    <div class="row"><small>Dancing Script</small>
+        <div class="n" style="font-family:'Dancing Script',cursive;font-weight:600">Đào Lâm Nhật Huy</div>
+    </div>
+</body>
+
+</html>

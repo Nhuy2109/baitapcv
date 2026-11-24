@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Đào Lâm Nhật Huy | Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Be+Vietnam+Pro:wght@400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!-- NỀN: ánh sáng cửa sổ + bóng khung cửa (chỉnh trong style.css) -->
+  <div class="scene" aria-hidden="true">
+    <div class="beams">
+      <span class="beam b1"></span>
+      <span class="beam b2"></span>
+      <span class="beam b3"></span>
+      <span class="beam b4"></span>
+      <span class="beam b5"></span>
+    </div>
+    <div class="frame-shadow">
+      <span class="bar v"></span>
+      <span class="bar h1"></span>
+      <span class="bar h2"></span>
+    </div>
+    <div class="dust"></div>
+    <div class="vignette"></div>
+  </div>
+
+  <header class="topbar">
+    <nav aria-label="Điều hướng chính">
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="about.html">About</a>
+      <a href="projects.html">Projects</a>
+      <a href="skills.html">Skills</a>
+      <a href="resume.html">Resume</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main class="hero">
+
+    <!-- Ô KÍNH CHỨA TÊN -->
+    <section class="glass" aria-label="Giới thiệu">
+      <h1 class="name">
+        <span>Đào Lâm</span>
+        <span>Nhật Huy</span>
+      </h1>
+      <p class="tagline">Sinh viên Công nghệ thông tin · Đại học Lạc Hồng</p>
+      <p class="tagline">Là sinh viên năm 2, lớp 25CT114 </p>
+      <p class="tagline">Leading - Humane - Upstanding</p>
+    </section>
+
+    <!--
+      KHUNG ẢNH CHÂN DUNG
+      1) Bỏ ảnh của bạn vào thư mục images/ và đặt tên portrait.jpg (hoặc .png).
+      2) Chọn kiểu hiển thị bằng class của thẻ figure:
+           portrait--fade    : ảnh có nền, mờ dần từ viền vào trong (có khung mảnh)
+           portrait--cutout  : ảnh đã xóa nền (PNG trong suốt), mờ dần ở chân và hai bên
+    -->
+    <figure class="portrait portrait--fade">
+      <img src="images/portrait.jpg" alt="Chân dung Đào Lâm Nhật Huy"
+        onerror="this.parentElement.classList.add('empty'); this.remove();">
+      <figcaption class="placeholder">Thêm ảnh chân dung<br><small>images/portrait.jpg</small></figcaption>
+    </figure>
+
+  </main>
+
+</body>
+
+</html>
