@@ -103,7 +103,7 @@ body {
 }
 
 /* =========================================================
-   THANH ĐIỀU HƯỚNG
+   THANH ĐIỀU HƯỚNG (dải glass) + NÚT ĐỔI NGÔN NGỮ
    ========================================================= */
 .topbar {
   position: absolute;
@@ -111,21 +111,60 @@ body {
   z-index: 5;
   display: flex;
   justify-content: flex-end;
+  align-items: flex-start;       /* để nút ngôn ngữ kéo dài xuống mà không làm dải menu giãn theo */
+  gap: 12px;
   padding: clamp(14px, 3vh, 28px) 6vw;
 }
-.topbar nav { display: flex; gap: clamp(14px, 2.2vw, 34px); flex-wrap: wrap; }
-.topbar a {
+
+/* kiểu glass dùng chung cho dải menu và nút ngôn ngữ */
+.navglass,
+.lang {
+  background: linear-gradient(135deg, rgba(255,255,255,.42) 0%, rgba(255,255,255,.16) 55%, rgba(255,255,255,.28) 100%);
+  -webkit-backdrop-filter: blur(16px) saturate(1.25);
+          backdrop-filter: blur(16px) saturate(1.25);
+  border: 1px solid rgba(255,255,255,.80);
+  box-shadow: 0 14px 28px -16px rgba(48,38,30,.40),
+              inset 0 1px 0 rgba(255,255,255,.95);
+}
+
+.navglass {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2.2vw, 32px);
+  height: 44px;                  /* bằng đường kính vòng tròn ngôn ngữ */
+  padding: 0 clamp(16px, 2.2vw, 28px);
+  border-radius: 999px;
+}
+.navglass a {
   color: var(--ink-soft);
   text-decoration: none;
   font-size: .95rem;
   padding: 4px 0;
   border-bottom: 1px solid transparent;
   transition: color .2s, border-color .2s;
+  white-space: nowrap;
 }
-.topbar a:hover,
-.topbar a:focus-visible,
-.topbar a[aria-current="page"] { color: var(--ink); border-color: var(--ink); outline: none; }
+.navglass a:hover,
+.navglass a:focus-visible,
+.navglass a[aria-current="page"] { color: var(--ink); border-color: var(--ink); outline: none; }
 
+.lang button {
+  display: grid;
+  place-items: center;
+  width: var(--d);
+  border: 0;
+  background: none;
+  color: var(--ink-soft);
+  font: 600 .8rem var(--font-body);
+  cursor: pointer;
+  transition: color .2s, background-color .2s;
+}
+.lang-btn { height: var(--d); color: var(--ink); }
+.lang-list { list-style: none; margin: 0; padding: 0 0 6px; }
+.lang-list button { height: var(--item); }
+.lang-list button:hover,
+.lang-list button:focus-visible { color: var(--ink); background: rgba(255,255,255,.45); outline: none; }
+.lang-list button.active { color: var(--ink); background: rgba(255,255,255,.65); }
 /* =========================================================
    BỐ CỤC TRANG CHỦ
    ========================================================= */
@@ -144,10 +183,14 @@ body {
 .glass {
   position: relative;
   justify-self: start;
-  width: min(100%, 760px);
   padding: clamp(32px, 5vw, 64px) clamp(28px, 5vw, 70px);
   border-radius: 28px;
   color: var(--ink);
+
+  --dx: 120px;                      /* DỊCH NGANG: dương = sang phải, âm = sang trái */
+  --dy: 0px;                      /* DỊCH DỌC: dương = xuống, âm = lên */
+  translate: var(--dx) var(--dy);
+
 
   /* lớp kính sáng hơn nền để chữ đen nổi rõ */
   background:
@@ -191,13 +234,18 @@ body {
   margin-left: 1.6em;
   padding-top: .08em;
 }
-/* đường kẻ mảnh giữa hai dòng tên, như trong mẫu */
-.name span:nth-child(2)::before {
-  content: "";
+/* THANH KIẾM bằng ảnh, nằm giữa hai dòng tên (mũi trái, chuôi phải) */
+.sword {
   position: absolute;
-  top: 0; left: -1.6em;
-  width: 3.8em; height: 1px;
-  background: linear-gradient(to right, transparent, rgba(23,19,15,.28), transparent);
+  z-index: 2;
+  top: -1.6em;              /* LÊN/XUỐNG: số âm càng lớn thì kiếm càng lên cao */
+  left: -0.8em;            /* NGANG: âm hơn thì mũi kiếm lùi sang trái */
+  width: 3em;            /* ĐỘ DÀI kiếm: tăng thì kiếm dài và to hơn */
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 5px rgba(48, 38, 30, .35));
+  transform: rotate(45deg);      /* DÒNG MỚI: xoay kiếm, đổi số độ cho đến khi lưỡi nằm ngang */
+  transform-origin: 50% 50%;      /* xoay quanh mũi kiếm (bên trái); đổi thành 50% 50% nếu muốn xoay quanh tâm */
 }
 
 .tagline {
@@ -284,6 +332,8 @@ body {
    ========================================================= */
 @media (max-width: 860px) {
   .topbar { justify-content: center; }
+  .navglass { gap: 12px; padding: 0 14px; }
+  .navglass a { font-size: .85rem; }
   .hero {
     grid-template-columns: 1fr;
     padding-top: 14vh;
@@ -293,7 +343,65 @@ body {
   .portrait { height: min(62vh, 560px); }
   .bar.h1, .bar.h2 { width: 100vw; }
 }
+/* ÁNH SÁNG LẤP LÁNH CHẠY DỌC VIỀN Ô GLASS */
+@property --shine-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.glass-shine {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 5px;                       /* độ dày vệt sáng */
+  pointer-events: none;
+  background: conic-gradient(from var(--shine-angle),
+      transparent 0deg,
+      transparent 285deg,
+      rgba(255, 226, 140, .0)  285deg,
+      rgba(255, 255, 255, 0.87) 335deg,   /* màu vàng của vệt sáng */
+      #ffffff                  354deg,
+      transparent              360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask-composite: exclude;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.9));
+  animation: shine-run 6s linear infinite;   /* tốc độ: số giây càng lớn càng chậm */
+}
+@keyframes shine-run { to { --shine-angle: 360deg; } }
+
+.spark {
+  position: absolute;
+  width: 50px;                         /* kích thước ngôi sao */
+  height: 18px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.2);
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.95));
+  animation: twinkle 3.6s ease-in-out infinite;
+}
+.spark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, #ffffff 0%, #fff0b8 55%, #ffd76a 100%);
+  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+}
+.s1 { left: 0;    top: 20%;  animation-delay: 0s;   }
+.s2 { left: 24%;  top: 0;    animation-delay: .6s;  width: 14px; height: 14px; }
+.s3 { left: 100%; top: 36%;  animation-delay: 1.2s; }
+.s4 { left: 74%;  top: 100%; animation-delay: 1.8s; width: 14px; height: 14px; }
+.s5 { left: 10%;  top: 100%; animation-delay: 2.4s; }
+.s6 { left: 90%;  top: 0;    animation-delay: 3s;   width: 12px; height: 12px; }
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(.2) rotate(0deg); }
+  50%      { opacity: 1; transform: translate(-50%, -50%) scale(1)  rotate(45deg); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .beam { animation: none; }
 }
+  .glass { justify-self: center; --dx: 0px; --dy: 0px; }
